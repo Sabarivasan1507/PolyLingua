@@ -1,0 +1,972 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="translation-container">
+    <!-- Header Section -->
+    <div class="translation-header">
+        <div class="header-content">
+            <div class="header-icon">🌍</div>
+            <h1>AI Translation</h1>
+            <p class="header-subtitle">Translate text between 100+ languages instantly</p>
+        </div>
+        <div class="header-stats">
+            <div class="stat-item">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Languages</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">⚡</div>
+                <div class="stat-label">Instant</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">🤖</div>
+                <div class="stat-label">AI Powered</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Translation Interface -->
+    <div class="translation-interface">
+        <!-- Source Language Section -->
+        <div class="language-section source-section">
+            <div class="section-header">
+                <div class="section-icon">📥</div>
+                <h3>Source Text</h3>
+            </div>
+            
+            <form method="POST" class="translation-form">
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">🌐</span>
+                        Source Language
+                    </label>
+                    <div class="input-with-suggestions">
+                        <input 
+                            type="text" 
+                            name="source_lang" 
+                            class="form-input" 
+                            placeholder="en (English)"
+                            value="{{ request.form.source_lang if request.form.source_lang else 'en' }}"
+                            required
+                            list="language-suggestions"
+                        >
+                        <datalist id="language-suggestions">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ru">Russian</option>
+                            <option value="zh">Chinese</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ko">Korean</option>
+                            <option value="ar">Arabic</option>
+                            <option value="hi">Hindi</option>
+                            <option value="ta">Tamil</option>
+                            <option value="te">Telugu</option>
+                        </datalist>
+                        <div class="input-hint">Use language codes (en, es, fr, etc.)</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">📝</span>
+                        Text to Translate
+                    </label>
+                    <div class="textarea-container">
+                        <textarea 
+                            name="input_text" 
+                            class="form-textarea" 
+                            placeholder="Enter text to translate..."
+                            rows="4"
+                            required
+                        >{{ request.form.input_text if request.form.input_text }}</textarea>
+                        <div class="textarea-actions">
+                            <button type="button" class="action-btn" onclick="clearText('input_text')" title="Clear text">
+                                🗑️
+                            </button>
+                            <button type="button" class="action-btn" onclick="speakText('input_text')" title="Listen">
+                                🔊
+                            </button>
+                        </div>
+                    </div>
+                    <div class="character-count">
+                        <span id="input-count">0</span> characters
+                    </div>
+                </div>
+            </div>
+
+            <!-- Target Language Section -->
+            <div class="language-section target-section">
+                <div class="section-header">
+                    <div class="section-icon">📤</div>
+                    <h3>Translation</h3>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">🎯</span>
+                        Target Language
+                    </label>
+                    <div class="input-with-suggestions">
+                        <input 
+                            type="text" 
+                            name="target_lang" 
+                            class="form-input" 
+                            placeholder="es (Spanish)"
+                            value="{{ request.form.target_lang if request.form.target_lang else 'es' }}"
+                            required
+                            list="language-suggestions"
+                        >
+                        <div class="input-hint">Use language codes (en, es, fr, etc.)</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">💫</span>
+                        Translated Text
+                    </label>
+                    <div class="translation-output">
+                        {% if translated_text %}
+                        <div class="translated-text active">
+                            <div class="text-content">{{ translated_text }}</div>
+                            <div class="translation-actions">
+                                <button type="button" class="action-btn" onclick="copyTranslation()" title="Copy translation">
+                                    📋
+                                </button>
+                                <button type="button" class="action-btn" onclick="speakTranslation()" title="Listen">
+                                    🔊
+                                </button>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="translated-text placeholder">
+                            <div class="placeholder-content">
+                                <div class="placeholder-icon">🤖</div>
+                                <p>Your translation will appear here</p>
+                                <small>Enter text and click Translate to get started</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Translate Button -->
+                <div class="translate-actions">
+                    <button type="submit" class="translate-btn" id="translate-btn">
+                        <span class="btn-content">
+                            <span class="btn-icon">🔁</span>
+                            <span class="btn-text">Translate Text</span>
+                        </span>
+                    </button>
+                    
+                    <button type="button" class="swap-btn" onclick="swapLanguages()" title="Swap languages">
+                        <span class="swap-icon">🔄</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quick Language Presets -->
+    <div class="language-presets">
+        <h3>Quick Translations</h3>
+        <p>Common language combinations</p>
+        <div class="presets-grid">
+            <button class="preset-btn" data-source="en" data-target="es">
+                <span class="preset-flag">🇺🇸 → 🇪🇸</span>
+                <span class="preset-text">English to Spanish</span>
+            </button>
+            <button class="preset-btn" data-source="en" data-target="fr">
+                <span class="preset-flag">🇺🇸 → 🇫🇷</span>
+                <span class="preset-text">English to French</span>
+            </button>
+            <button class="preset-btn" data-source="en" data-target="de">
+                <span class="preset-flag">🇺🇸 → 🇩🇪</span>
+                <span class="preset-text">English to German</span>
+            </button>
+            <button class="preset-btn" data-source="en" data-target="zh">
+                <span class="preset-flag">🇺🇸 → 🇨🇳</span>
+                <span class="preset-text">English to Chinese</span>
+            </button>
+            <button class="preset-btn" data-source="es" data-target="en">
+                <span class="preset-flag">🇪🇸 → 🇺🇸</span>
+                <span class="preset-text">Spanish to English</span>
+            </button>
+            <button class="preset-btn" data-source="fr" data-target="en">
+                <span class="preset-flag">🇫🇷 → 🇺🇸</span>
+                <span class="preset-text">French to English</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Translation History (Optional) -->
+    <div class="translation-history">
+        <div class="history-header">
+            <h3>Recent Translations</h3>
+            <button class="clear-history-btn" onclick="clearHistory()">Clear History</button>
+        </div>
+        <div class="history-list" id="history-list">
+            <!-- History items will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <h3>Translating...</h3>
+        <p>Processing your text with AI</p>
+    </div>
+</div>
+
+<style>
+/* Main Container */
+.translation-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Section */
+.translation-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.translation-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    animation: float 20s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-30px, -30px) rotate(360deg); }
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 30px;
+}
+
+.header-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.translation-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.header-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.header-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Translation Interface */
+.translation-interface {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.language-section {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.source-section {
+    border-top: 4px solid #4299e1;
+}
+
+.target-section {
+    border-top: 4px solid #48bb78;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f7fafc;
+}
+
+.section-icon {
+    font-size: 1.8rem;
+}
+
+.section-header h3 {
+    margin: 0;
+    color: #2d3748;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+/* Form Styles */
+.translation-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.label-icon {
+    font-size: 1.1rem;
+}
+
+.input-with-suggestions {
+    position: relative;
+}
+
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f7fafc;
+    font-weight: 500;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-hint {
+    font-size: 0.8rem;
+    color: #718096;
+    margin-top: 5px;
+}
+
+/* Textarea Styles */
+.textarea-container {
+    position: relative;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f7fafc;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.textarea-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+.action-btn:hover {
+    background: white;
+    border-color: #667eea;
+    transform: scale(1.1);
+}
+
+.character-count {
+    text-align: right;
+    font-size: 0.8rem;
+    color: #718096;
+    margin-top: 5px;
+}
+
+/* Translation Output */
+.translation-output {
+    min-height: 150px;
+}
+
+.translated-text {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    min-height: 120px;
+    position: relative;
+}
+
+.translated-text.active {
+    background: #f0fff4;
+    border-color: #48bb78;
+}
+
+.text-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #2d3748;
+    margin-bottom: 40px;
+}
+
+.translation-actions {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.placeholder-content {
+    text-align: center;
+    color: #718096;
+    padding: 20px 0;
+}
+
+.placeholder-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+/* Translate Actions */
+.translate-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.translate-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.translate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.swap-btn {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.swap-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: rotate(180deg);
+}
+
+/* Language Presets */
+.language-presets {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.language-presets h3 {
+    color: #2d3748;
+    margin-bottom: 8px;
+    font-size: 1.4rem;
+}
+
+.language-presets p {
+    color: #718096;
+    margin-bottom: 25px;
+}
+
+.presets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.preset-btn {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.preset-btn:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.preset-flag {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.preset-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4a5568;
+}
+
+/* Translation History */
+.translation-history {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f7fafc;
+}
+
+.history-header h3 {
+    margin: 0;
+    color: #2d3748;
+    font-size: 1.4rem;
+}
+
+.clear-history-btn {
+    background: #fed7d7;
+    color: #c53030;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.clear-history-btn:hover {
+    background: #feb2b2;
+}
+
+.history-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.history-item {
+    background: #f7fafc;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.history-text {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-bottom: 5px;
+}
+
+.history-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-content h3 {
+    margin: 0 0 10px 0;
+    color: #2d3748;
+}
+
+.loading-content p {
+    margin: 0;
+    color: #718096;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .translation-container {
+        padding: 15px;
+    }
+    
+    .translation-interface {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .translation-header {
+        padding: 30px 20px;
+    }
+    
+    .header-stats {
+        gap: 20px;
+    }
+    
+    .presets-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .translate-actions {
+        flex-direction: column;
+    }
+    
+    .swap-btn {
+        order: -1;
+        align-self: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .translation-header h1 {
+        font-size: 2rem;
+    }
+    
+    .header-icon {
+        font-size: 3rem;
+    }
+    
+    .presets-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .language-section {
+        padding: 20px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.translation-form');
+    const translateBtn = document.getElementById('translate-btn');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const inputTextarea = document.querySelector('textarea[name="input_text"]');
+    const inputCount = document.getElementById('input-count');
+    
+    // Character count for input text
+    inputTextarea.addEventListener('input', function() {
+        inputCount.textContent = this.value.length;
+    });
+    
+    // Initialize character count
+    inputCount.textContent = inputTextarea.value.length;
+    
+    // Form submission with loading state
+    form.addEventListener('submit', function(e) {
+        if (!inputTextarea.value.trim()) {
+            e.preventDefault();
+            showNotification('Please enter some text to translate', 'error');
+            return;
+        }
+        
+        loadingOverlay.style.display = 'flex';
+        translateBtn.disabled = true;
+        translateBtn.innerHTML = '<span class="btn-content"><span class="btn-icon">⏳</span><span class="btn-text">Translating...</span></span>';
+    });
+    
+    // Quick preset buttons
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const sourceLang = this.getAttribute('data-source');
+            const targetLang = this.getAttribute('data-target');
+            
+            document.querySelector('input[name="source_lang"]').value = sourceLang;
+            document.querySelector('input[name="target_lang"]').value = targetLang;
+            
+            showNotification(`Language set to ${sourceLang} → ${targetLang}`, 'success');
+        });
+    });
+    
+    // Load translation history
+    loadTranslationHistory();
+});
+
+function swapLanguages() {
+    const sourceLang = document.querySelector('input[name="source_lang"]');
+    const targetLang = document.querySelector('input[name="target_lang"]');
+    const inputText = document.querySelector('textarea[name="input_text"]');
+    const translatedText = document.querySelector('.translated-text.active .text-content');
+    
+    // Swap language values
+    [sourceLang.value, targetLang.value] = [targetLang.value, sourceLang.value];
+    
+    // If there's a translation, swap the texts too
+    if (translatedText) {
+        inputText.value = translatedText.textContent;
+        showNotification('Languages swapped!', 'success');
+    }
+}
+
+function clearText(textareaName) {
+    const textarea = document.querySelector(`[name="${textareaName}"]`);
+    textarea.value = '';
+    textarea.dispatchEvent(new Event('input'));
+    showNotification('Text cleared', 'info');
+}
+
+function copyTranslation() {
+    const translatedText = document.querySelector('.translated-text.active .text-content');
+    if (translatedText) {
+        navigator.clipboard.writeText(translatedText.textContent).then(() => {
+            showNotification('Translation copied to clipboard!', 'success');
+        }).catch(() => {
+            showNotification('Failed to copy text', 'error');
+        });
+    }
+}
+
+function speakText(textareaName) {
+    const textarea = document.querySelector(`[name="${textareaName}"]`);
+    const text = textarea.value.trim();
+    
+    if (!text) {
+        showNotification('Please enter some text first', 'error');
+        return;
+    }
+    
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        const lang = document.querySelector('input[name="source_lang"]').value || 'en';
+        utterance.lang = lang;
+        utterance.rate = 0.8;
+        speechSynthesis.speak(utterance);
+    } else {
+        showNotification('Text-to-speech not supported in your browser', 'error');
+    }
+}
+
+function speakTranslation() {
+    const translatedText = document.querySelector('.translated-text.active .text-content');
+    if (!translatedText) {
+        showNotification('No translation available', 'error');
+        return;
+    }
+    
+    const text = translatedText.textContent.trim();
+    
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        const lang = document.querySelector('input[name="target_lang"]').value || 'en';
+        utterance.lang = lang;
+        utterance.rate = 0.8;
+        speechSynthesis.speak(utterance);
+    } else {
+        showNotification('Text-to-speech not supported in your browser', 'error');
+    }
+}
+
+function loadTranslationHistory() {
+    const history = JSON.parse(localStorage.getItem('translationHistory') || '[]');
+    const historyList = document.getElementById('history-list');
+    
+    if (history.length === 0) {
+        historyList.innerHTML = '<div class="history-item"><div class="history-text">No translation history yet</div></div>';
+        return;
+    }
+    
+    historyList.innerHTML = history.slice(0, 10).map(item => `
+        <div class="history-item">
+            <div class="history-text"><strong>${item.source} → ${item.target}:</strong> ${item.input}</div>
+            <div class="history-text">${item.translation}</div>
+            <div class="history-meta">
+                <span>${new Date(item.timestamp).toLocaleDateString()}</span>
+                <button onclick="useHistoryItem('${item.input}', '${item.source}', '${item.target}')">Use</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function useHistoryItem(input, source, target) {
+    document.querySelector('textarea[name="input_text"]').value = input;
+    document.querySelector('input[name="source_lang"]').value = source;
+    document.querySelector('input[name="target_lang"]').value = target;
+    showNotification('History item loaded', 'success');
+}
+
+function clearHistory() {
+    localStorage.removeItem('translationHistory');
+    loadTranslationHistory();
+    showNotification('Translation history cleared', 'info');
+}
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        z-index: 1001;
+        animation: slideInRight 0.3s ease;
+    `;
+    
+    if (type === 'success') notification.style.background = '#48bb78';
+    else if (type === 'error') notification.style.background = '#f56565';
+    else if (type === 'info') notification.style.background = '#4299e1';
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// Add CSS for notification animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

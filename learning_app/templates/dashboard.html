@@ -1,0 +1,541 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-container">
+    <!-- Welcome Header -->
+    <div class="welcome-section">
+        <h1 class="welcome-title">Welcome back, <span class="username-highlight">{{ username }}</span>! 👋</h1>
+        <p class="welcome-subtitle">Continue your language learning journey</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-info">
+                <h3>{{ languages|length }}</h3>
+                <p>Languages Available</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-info">
+                <h3>{{ analytics.completed_lessons if analytics else 0 }}</h3>
+                <p>Lessons Completed</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-info">
+                <h3>{{ analytics.streak_days if analytics else 0 }}</h3>
+                <p>Day Streak</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-info">
+                <h3>{{ analytics.average_score if analytics else 0 }}%</h3>
+                <p>Average Score</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Features Grid -->
+    <div class="features-grid">
+        <!-- Learn Language Card -->
+        <div class="feature-card learn-card">
+            <div class="card-header">
+                <div class="card-icon">🌎</div>
+                <h3>Learn Languages</h3>
+            </div>
+            <p>Choose from {{ languages|length }}+ languages and start learning with interactive lessons</p>
+            <div class="languages-grid">
+                {% for lang in languages %}
+                <a href="{{ url_for('learn_language', language=lang) }}" class="language-tag">
+                    {{ lang }}
+                </a>
+                {% endfor %}
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('learn_language', language=languages[0]) }}" class="card-btn">
+                    Start Learning →
+                </a>
+            </div>
+        </div>
+
+        <!-- Translation Card -->
+        <div class="feature-card translate-card">
+            <div class="card-header">
+                <div class="card-icon">🔤</div>
+                <h3>Translation Tool</h3>
+            </div>
+            <p>Instant translation between multiple languages with AI-powered accuracy</p>
+            <div class="feature-highlights">
+                <span class="highlight">🌐 50+ Languages</span>
+                <span class="highlight">⚡ Real-time</span>
+                <span class="highlight">📝 Save History</span>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('translate') }}" class="card-btn">
+                    Try Translator →
+                </a>
+            </div>
+        </div>
+
+        <!-- AI Assistant Card -->
+        <div class="feature-card assistant-card">
+            <div class="card-header">
+                <div class="card-icon">🤖</div>
+                <h3>AI Learning Assistant</h3>
+            </div>
+            <p>Chat with your personal AI tutor for personalized guidance and learning tips</p>
+            <div class="feature-highlights">
+                <span class="highlight">💬 24/7 Available</span>
+                <span class="highlight">🎯 Personalized</span>
+                <span class="highlight">📚 Study Tips</span>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('agent_chat') }}" class="card-btn primary-btn">
+                    Chat with Agent →
+                </a>
+            </div>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="feature-card progress-card">
+            <div class="card-header">
+                <div class="card-icon">📊</div>
+                <h3>Your Progress</h3>
+            </div>
+            <p>Track your learning journey with detailed analytics and insights</p>
+            <div class="progress-chart-mini">
+                <div class="chart-bar" style="height: 30%"></div>
+                <div class="chart-bar" style="height: 60%"></div>
+                <div class="chart-bar" style="height: 45%"></div>
+                <div class="chart-bar" style="height: 80%"></div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('progress') }}" class="card-btn">
+                    View Analytics →
+                </a>
+            </div>
+        </div>
+
+        <!-- Quiz Card -->
+        <div class="feature-card quiz-card">
+            <div class="card-header">
+                <div class="card-icon">🎮</div>
+                <h3>AI Quiz Challenge</h3>
+            </div>
+            <p>Test your knowledge with AI-generated quizzes tailored to your level</p>
+            <div class="quiz-features">
+                <div class="quiz-feature">
+                    <span class="feature-dot"></span>
+                    <span>Personalized Questions</span>
+                </div>
+                <div class="quiz-feature">
+                    <span class="feature-dot"></span>
+                    <span>Multiple Languages</span>
+                </div>
+                <div class="quiz-feature">
+                    <span class="feature-dot"></span>
+                    <span>Instant Feedback</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('quiz_setup') }}" class="card-btn primary-btn">
+                    Start Quiz Challenge →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="activity-section">
+        <h3>Recent Activity</h3>
+        <div class="activity-list">
+            <div class="activity-item">
+                <div class="activity-icon">🎯</div>
+                <div class="activity-content">
+                    <p><strong>Welcome to LinguaLearn!</strong></p>
+                    <span class="activity-time">Just now</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon">🚀</div>
+                <div class="activity-content">
+                    <p>Complete your first quiz to unlock achievements</p>
+                    <span class="activity-time">Ready when you are</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon">🤖</div>
+                <div class="activity-content">
+                    <p>Try our new AI Assistant for personalized learning help</p>
+                    <span class="activity-time">New feature</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Main Container */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Welcome Section */
+.welcome-section {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 0;
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 10px;
+}
+
+.username-highlight {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.welcome-subtitle {
+    font-size: 1.2rem;
+    color: #718096;
+    margin: 0;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.stat-icon {
+    font-size: 2rem;
+}
+
+.stat-info h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0;
+}
+
+.stat-info p {
+    color: #718096;
+    margin: 5px 0 0 0;
+    font-size: 0.9rem;
+}
+
+/* Features Grid */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.feature-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.learn-card {
+    border-top: 4px solid #48bb78;
+}
+
+.translate-card {
+    border-top: 4px solid #4299e1;
+}
+
+.assistant-card {
+    border-top: 4px solid #e53e3e;
+}
+
+.progress-card {
+    border-top: 4px solid #ed8936;
+}
+
+.quiz-card {
+    border-top: 4px solid #9f7aea;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.card-icon {
+    font-size: 2rem;
+}
+
+.card-header h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0;
+}
+
+.feature-card p {
+    color: #718096;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+/* Languages Grid */
+.languages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.language-tag {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.language-tag:hover {
+    background: #4299e1;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Feature Highlights */
+.feature-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.highlight {
+    background: #ebf8ff;
+    color: #2b6cb0;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.assistant-card .highlight {
+    background: #fed7d7;
+    color: #c53030;
+}
+
+/* Progress Chart Mini */
+.progress-chart-mini {
+    display: flex;
+    align-items: end;
+    gap: 8px;
+    height: 60px;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+.chart-bar {
+    flex: 1;
+    background: linear-gradient(to top, #ed8936, #fbd38d);
+    border-radius: 4px 4px 0 0;
+    min-height: 10px;
+    transition: height 0.3s ease;
+}
+
+/* Quiz Features */
+.quiz-features {
+    margin-bottom: 20px;
+}
+
+.quiz-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    color: #4a5568;
+}
+
+.feature-dot {
+    width: 8px;
+    height: 8px;
+    background: #9f7aea;
+    border-radius: 50%;
+}
+
+/* Card Footer */
+.card-footer {
+    margin-top: auto;
+}
+
+.card-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #f7fafc;
+    color: #4a5568;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    text-align: center;
+    width: 100%;
+}
+
+.card-btn:hover {
+    background: #4299e1;
+    color: white;
+    transform: translateX(5px);
+}
+
+.primary-btn {
+    background: #9f7aea;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #805ad5;
+}
+
+.assistant-card .card-btn {
+    background: #e53e3e;
+    color: white;
+}
+
+.assistant-card .card-btn:hover {
+    background: #c53030;
+}
+
+/* Activity Section */
+.activity-section {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+}
+
+.activity-section h3 {
+    font-size: 1.4rem;
+    color: #2d3748;
+    margin-bottom: 20px;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 12px;
+    transition: background 0.3s ease;
+}
+
+.activity-item:hover {
+    background: #edf2f7;
+}
+
+.activity-icon {
+    font-size: 1.2rem;
+}
+
+.activity-content p {
+    margin: 0;
+    color: #2d3748;
+}
+
+.activity-time {
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 15px;
+    }
+    
+    .welcome-title {
+        font-size: 2rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .languages-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-title {
+        font-size: 1.6rem;
+    }
+    
+    .feature-card {
+        padding: 20px;
+    }
+    
+    .languages-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+{% endblock %}

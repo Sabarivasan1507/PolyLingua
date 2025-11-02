@@ -1,0 +1,727 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="learning-container">
+    <!-- Header Section -->
+    <div class="learning-header">
+        <div class="language-badge">
+            <span class="flag">🌍</span>
+            <h1>Learning {{ language }}</h1>
+        </div>
+        <p class="learning-subtitle">Master essential phrases and build your vocabulary</p>
+        <div class="progress-indicator">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 30%"></div>
+            </div>
+            <span>3/10 Lessons Completed</span>
+        </div>
+    </div>
+
+    <!-- Main Learning Interface -->
+    <div class="learning-interface">
+        <!-- Native Language Panel -->
+        <div class="language-panel native-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="panel-icon">🏠</span>
+                    <h3>Native Language (English)</h3>
+                </div>
+                <div class="panel-actions">
+                    <button class="action-btn" onclick="speakNativeText()" title="Listen">
+                        🔊
+                    </button>
+                    <button class="action-btn" onclick="copyNativeText()" title="Copy">
+                        📋
+                    </button>
+                </div>
+            </div>
+            
+            <div class="sentence-display" id="nativeSentence">
+                <div class="sentence-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Generating learning content...</p>
+                </div>
+            </div>
+            
+            <div class="vocabulary-section">
+                <h4>Key Vocabulary</h4>
+                <div class="vocabulary-list" id="nativeVocabulary">
+                    <!-- Vocabulary will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Language Panel -->
+        <div class="language-panel learning-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="panel-icon">🎯</span>
+                    <h3>Learning {{ language }}</h3>
+                </div>
+                <div class="panel-actions">
+                    <button class="action-btn" onclick="speakLearningText()" title="Listen">
+                        🔊
+                    </button>
+                    <button class="action-btn" onclick="copyLearningText()" title="Copy">
+                        📋
+                    </button>
+                    <button class="action-btn primary" onclick="generateNewContent()" title="New Content">
+                        🔄
+                    </button>
+                </div>
+            </div>
+            
+            <div class="sentence-display" id="learningSentence">
+                <div class="sentence-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Translating content...</p>
+                </div>
+            </div>
+            
+            <div class="vocabulary-section">
+                <h4>Key Vocabulary</h4>
+                <div class="vocabulary-list" id="learningVocabulary">
+                    <!-- Vocabulary will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lesson Navigation -->
+    <div class="lesson-navigation">
+        <div class="nav-buttons">
+            <button class="nav-btn prev-btn" onclick="previousLesson()" disabled>
+                ← Previous
+            </button>
+            <button class="nav-btn next-btn" onclick="nextLesson()">
+                Next Lesson →
+            </button>
+        </div>
+        <div class="lesson-progress">
+            <span class="lesson-counter">Lesson 1 of 10</span>
+        </div>
+    </div>
+
+    <!-- Additional Lessons List -->
+   
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+        <div class="loading-spinner large"></div>
+        <h3>Generating Learning Content</h3>
+        <p>Using AI to create personalized lessons...</p>
+    </div>
+</div>
+
+<style>
+/* Main Container */
+.learning-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Section */
+.learning-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    color: white;
+}
+
+.language-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.language-badge .flag {
+    font-size: 2.5rem;
+}
+
+.language-badge h1 {
+    font-size: 2.2rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.learning-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 20px;
+}
+
+.progress-indicator {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: center;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #48bb78;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+/* Learning Interface */
+.learning-interface {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.language-panel {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.native-panel {
+    border-top: 4px solid #4299e1;
+}
+
+.learning-panel {
+    border-top: 4px solid #48bb78;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    background: #f7fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.panel-icon {
+    font-size: 1.5rem;
+}
+
+.panel-title h3 {
+    margin: 0;
+    color: #2d3748;
+    font-size: 1.3rem;
+}
+
+.panel-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.action-btn:hover {
+    background: #edf2f7;
+    transform: scale(1.05);
+}
+
+.action-btn.primary {
+    background: #4299e1;
+    color: white;
+    border-color: #4299e1;
+}
+
+.action-btn.primary:hover {
+    background: #3182ce;
+}
+
+/* Sentence Display */
+.sentence-display {
+    padding: 30px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sentence-text {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: #2d3748;
+    text-align: center;
+    margin: 0;
+}
+
+.sentence-loading {
+    text-align: center;
+    color: #718096;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #4299e1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+.loading-spinner.large {
+    width: 60px;
+    height: 60px;
+    border-width: 5px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Vocabulary Section */
+.vocabulary-section {
+    padding: 25px;
+    background: #f7fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.vocabulary-section h4 {
+    margin: 0 0 15px 0;
+    color: #2d3748;
+    font-size: 1.1rem;
+}
+
+.vocabulary-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.vocabulary-item {
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.vocabulary-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Lesson Navigation */
+.lesson-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-btn {
+    padding: 12px 25px;
+    border: 2px solid #4299e1;
+    background: white;
+    color: #4299e1;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: #4299e1;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.lesson-counter {
+    color: #718096;
+    font-weight: 600;
+}
+
+/* Additional Lessons */
+.additional-lessons {
+    margin-top: 40px;
+}
+
+.additional-lessons h3 {
+    color: #2d3748;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.lesson-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid #4299e1;
+}
+
+.lesson-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.lesson-icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.lesson-content h4 {
+    margin: 0 0 10px 0;
+    color: #2d3748;
+}
+
+.lesson-content p {
+    color: #718096;
+    margin: 0 0 15px 0;
+    line-height: 1.5;
+}
+
+.audio-player {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.loading-content h3 {
+    margin: 20px 0 10px 0;
+    color: #2d3748;
+}
+
+.loading-content p {
+    color: #718096;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .learning-interface {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .learning-container {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .lesson-navigation {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .panel-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .language-badge {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .language-badge h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .learning-header {
+        padding: 20px;
+    }
+    
+    .sentence-display {
+        padding: 20px;
+    }
+    
+    .sentence-text {
+        font-size: 1.2rem;
+    }
+    
+    .vocabulary-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style>
+
+<script>
+// Global variables
+let currentLesson = 1;
+const totalLessons = 10;
+let currentContent = null;
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    generateNewContent();
+});
+
+// Generate new learning content using Gemini AI
+async function generateNewContent() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const nativeSentence = document.getElementById('nativeSentence');
+    const learningSentence = document.getElementById('learningSentence');
+    const nativeVocabulary = document.getElementById('nativeVocabulary');
+    const learningVocabulary = document.getElementById('learningVocabulary');
+    
+    // Show loading state
+    loadingOverlay.style.display = 'flex';
+    nativeSentence.innerHTML = '<div class="sentence-loading"><div class="loading-spinner"></div><p>Generating learning content...</p></div>';
+    learningSentence.innerHTML = '<div class="sentence-loading"><div class="loading-spinner"></div><p>Translating content...</p></div>';
+    
+    try {
+        const response = await fetch('/generate_lesson_content', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                language: '{{ language }}',
+                lesson_number: currentLesson
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            currentContent = data.content;
+            
+            // Update native language panel
+            nativeSentence.innerHTML = `<p class="sentence-text">${data.content.native_sentence}</p>`;
+            nativeVocabulary.innerHTML = data.content.native_vocabulary.map(word => 
+                `<div class="vocabulary-item">${word}</div>`
+            ).join('');
+            
+            // Update learning language panel
+            learningSentence.innerHTML = `<p class="sentence-text">${data.content.learning_sentence}</p>`;
+            learningVocabulary.innerHTML = data.content.learning_vocabulary.map(word => 
+                `<div class="vocabulary-item">${word}</div>`
+            ).join('');
+            
+        } else {
+            throw new Error(data.error || 'Failed to generate content');
+        }
+        
+    } catch (error) {
+        console.error('Error generating content:', error);
+        nativeSentence.innerHTML = '<p class="sentence-text">Hello! How are you today?</p>';
+        learningSentence.innerHTML = '<p class="sentence-text">¡Hola! ¿Cómo estás hoy?</p>';
+        
+        // Fallback vocabulary
+        const fallbackVocab = ['Hello', 'How', 'Are', 'You', 'Today'];
+        nativeVocabulary.innerHTML = fallbackVocab.map(word => 
+            `<div class="vocabulary-item">${word}</div>`
+        ).join('');
+        learningVocabulary.innerHTML = fallbackVocab.map(word => 
+            `<div class="vocabulary-item">${word}</div>`
+        ).join('');
+        
+        flashMessage('Using fallback content. AI service temporarily unavailable.', 'warning');
+    } finally {
+        loadingOverlay.style.display = 'none';
+    }
+}
+
+// Text-to-Speech Functions
+function speakNativeText() {
+    const text = document.querySelector('#nativeSentence .sentence-text')?.textContent;
+    if (text) {
+        speakText(text, 'en-US');
+    }
+}
+
+function speakLearningText() {
+    const text = document.querySelector('#learningSentence .sentence-text')?.textContent;
+    if (text) {
+        // You might want to detect the language code based on the selected language
+        const langCode = getLanguageCode('{{ language }}');
+        speakText(text, langCode);
+    }
+}
+
+function speakText(text, lang) {
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang;
+        utterance.rate = 0.8;
+        utterance.pitch = 1;
+        speechSynthesis.speak(utterance);
+    } else {
+        flashMessage('Text-to-speech not supported in your browser', 'error');
+    }
+}
+
+function getLanguageCode(language) {
+    const codes = {
+        'English': 'en-US',
+        'Spanish': 'es-ES',
+        'French': 'fr-FR',
+        'German': 'de-DE',
+        'Tamil': 'ta-IN',
+        'Hindi': 'hi-IN',
+        'Mandarin': 'zh-CN',
+        'Japanese': 'ja-JP',
+        'Korean': 'ko-KR'
+    };
+    return codes[language] || 'en-US';
+}
+
+// Copy Functions
+function copyNativeText() {
+    const text = document.querySelector('#nativeSentence .sentence-text')?.textContent;
+    copyToClipboard(text);
+}
+
+function copyLearningText() {
+    const text = document.querySelector('#learningSentence .sentence-text')?.textContent;
+    copyToClipboard(text);
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        flashMessage('Copied to clipboard!', 'success');
+    }).catch(() => {
+        flashMessage('Failed to copy text', 'error');
+    });
+}
+
+// Navigation Functions
+function nextLesson() {
+    if (currentLesson < totalLessons) {
+        currentLesson++;
+        updateLessonCounter();
+        generateNewContent();
+    }
+}
+
+function previousLesson() {
+    if (currentLesson > 1) {
+        currentLesson--;
+        updateLessonCounter();
+        generateNewContent();
+    }
+}
+
+function updateLessonCounter() {
+    const counter = document.querySelector('.lesson-counter');
+    const prevBtn = document.querySelector('.prev-btn');
+    
+    if (counter) {
+        counter.textContent = `Lesson ${currentLesson} of ${totalLessons}`;
+    }
+    
+    if (prevBtn) {
+        prevBtn.disabled = currentLesson === 1;
+    }
+}
+
+// Utility Functions
+function flashMessage(message, type) {
+    // Create a temporary flash message
+    const flash = document.createElement('div');
+    flash.className = `flash-message flash-${type}`;
+    flash.textContent = message;
+    flash.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        z-index: 1001;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    if (type === 'success') flash.style.background = '#48bb78';
+    else if (type === 'error') flash.style.background = '#f56565';
+    else if (type === 'warning') flash.style.background = '#ed8936';
+    
+    document.body.appendChild(flash);
+    
+    setTimeout(() => {
+        flash.remove();
+    }, 3000);
+}
+
+// Add CSS for flash message animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

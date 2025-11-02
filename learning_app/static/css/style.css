@@ -1,0 +1,75 @@
+body {
+background-color: #f9f9f9;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.navbar-brand {
+font-weight: bold;
+color: #007bff !important;
+}
+
+
+.container h2 {
+color: #333;
+margin-bottom: 20px;
+}
+
+
+.card {
+background-color: #fff;
+border-radius: 8px;
+box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+
+.card h5 {
+font-weight: bold;
+color: #007bff;
+}
+
+
+.btn-primary {
+background-color: #007bff;
+border: none;
+}
+
+
+.btn-success {
+background-color: #28a745;
+border: none;
+}
+
+
+input, select {
+padding: 8px;
+border-radius: 5px;
+border: 1px solid #ccc;
+}
+
+
+.alert {
+font-size: 14px;
+}
+
+
+ul {
+list-style-type: none;
+padding-left: 0;
+}
+
+
+ul li {
+padding: 5px 0;
+}
+
+
+ul li a {
+text-decoration: none;
+color: #007bff;
+}
+
+
+ul li a:hover {
+text-decoration: underline;
+}

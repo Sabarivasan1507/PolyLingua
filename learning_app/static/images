@@ -1,0 +1,13 @@
+/* static/images/ folder */
+
+/* You can add the following example images for your PolyLingua project */
+
+1. logo.png - Project logo to show in navbar
+2. lesson1.png - Thumbnail or illustration for first lesson
+3. lesson2.png - Thumbnail for second lesson
+4. language_icons/ - Folder containing icons for each language (en.png, fr.png, hi.png, etc.)
+5. translate_icon.png - Icon for translation page
+
+/* Usage in HTML */
+// Example in base.html navbar:
+// <img src="{{ url_for('static', filename='images/logo.png') }}" alt="PolyLingua Logo" height="40">

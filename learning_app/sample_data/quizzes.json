@@ -1,0 +1,170 @@
+[
+	{
+	"id": 1,
+	"lesson_id": 1,
+	"question": "How do you say Hello in English?",
+	"options": "Hello;Hi;Hey;Hola",
+	"correct_answer": "Hello"
+	},
+	{
+	"id": 2,
+	"lesson_id": 2,
+	"question": "What is number 5 in English?",
+	"options": "Four;Five;Six;Seven",
+	"correct_answer": "Five"
+	},
+	{
+	"id": 3,
+	"lesson_id": 3,
+	"question": "How do you say Hello in Spanish?",
+	"options": "Hola;Bonjour;Namaste;Privet",
+	"correct_answer": "Hola"
+	},
+	{
+	"id": 4,
+	"lesson_id": 4,
+	"question": "What is number 5 in Spanish?",
+	"options": "Cuatro;Cinco;Seis;Siete",
+	"correct_answer": "Cinco"
+	},
+	{
+	"id": 5,
+	"lesson_id": 5,
+	"question": "How do you say Hello in Tamil?",
+	"options": "Vanakkam;Namaste;Shagotom;Halo",
+	"correct_answer": "Vanakkam"
+	},
+	{
+	"id": 6,
+	"lesson_id": 6,
+	"question": "What is number 5 in Tamil?",
+	"options": "Naangu;Aindu;Aaru;Yezhu",
+	"correct_answer": "Aindu"
+	},
+	{
+	"id": 7,
+	"lesson_id": 7,
+	"question": "How do you say Hello in Mandarin?",
+	"options": "Nǐ hǎo;Bonjour;Namaste;Privet",
+	"correct_answer": "Nǐ hǎo"
+	},
+	{
+	"id": 8,
+	"lesson_id": 8,
+	"question": "What is number 5 in Mandarin?",
+	"options": "Sì;Wǔ;Liù;Qī",
+	"correct_answer": "Wǔ"
+	},
+	{
+	"id": 9,
+	"lesson_id": 9,
+	"question": "How do you say Hello in Hindi?",
+	"options": "Namaste;Bonjour;Shagotom;Halo",
+	"correct_answer": "Namaste"
+	},
+	{
+	"id": 10,
+	"lesson_id": 10,
+	"question": "What is number 5 in Hindi?",
+	"options": "Chaar;Paanch;Cheh;Saat",
+	"correct_answer": "Paanch"
+	},
+	{
+	"id": 11,
+	"lesson_id": 11,
+	"question": "How do you say Hello in French?",
+	"options": "Bonjour;Hola;Namaste;Privet",
+	"correct_answer": "Bonjour"
+	},
+	{
+	"id": 12,
+	"lesson_id": 12,
+	"question": "What is number 5 in French?",
+	"options": "Quatre;Cinq;Six;Sept",
+	"correct_answer": "Cinq"
+	},
+	{
+	"id": 13,
+	"lesson_id": 13,
+	"question": "How do you say Hello in Arabic?",
+	"options": "As-salamu alaykum;Bonjour;Namaste;Privet",
+	"correct_answer": "As-salamu alaykum"
+	},
+	{
+	"id": 14,
+	"lesson_id": 14,
+	"question": "What is number 5 in Arabic?",
+	"options": "Arba'a;Khamsa;Sitta;Sab'a",
+	"correct_answer": "Khamsa"
+	},
+	{
+	"id": 15,
+	"lesson_id": 15,
+	"question": "How do you say Hello in Bengali?",
+	"options": "Shagotom;Bonjour;Namaste;Halo",
+	"correct_answer": "Shagotom"
+	},
+	{
+	"id": 16,
+	"lesson_id": 16,
+	"question": "What is number 5 in Bengali?",
+	"options": "Char;Pach;Chhoy;Shat",
+	"correct_answer": "Pach"
+	},
+	{
+	"id": 17,
+	"lesson_id": 17,
+	"question": "How do you say Hello in Portuguese?",
+	"options": "Olá;Bonjour;Namaste;Privet",
+	"correct_answer": "Olá"
+	},
+	{
+	"id": 18,
+	"lesson_id": 18,
+	"question": "What is number 5 in Portuguese?",
+	"options": "Quatro;Cinco;Seis;Sete",
+	"correct_answer": "Cinco"
+	},
+	{
+	"id": 19,
+	"lesson_id": 19,
+	"question": "How do you say Hello in Russian?",
+	"options": "Privet;Bonjour;Namaste;Halo",
+	"correct_answer": "Privet"
+	},
+	{
+	"id": 20,
+	"lesson_id": 20,
+	"question": "What is number 5 in Russian?",
+	"options": "Chetyre;Pyat;Shest;Sem",
+	"correct_answer": "Pyat"
+	},
+	{
+	"id": 21,
+	"lesson_id": 21,
+	"question": "How do you say Hello in Urdu?",
+	"options": "Assalam-o-Alaikum;Bonjour;Namaste;Halo",
+	"correct_answer": "Assalam-o-Alaikum"
+	},
+	{
+	"id": 22,
+	"lesson_id": 22,
+	"question": "What is number 5 in Urdu?",
+	"options": "Chaar;Paanch;Cheh;Saat",
+	"correct_answer": "Paanch"
+	},
+	{
+	"id": 23,
+	"lesson_id": 23,
+	"question": "How do you say Hello in Indonesian?",
+	"options": "Halo;Bonjour;Namaste;Privet",
+	"correct_answer": "Halo"
+	},
+	{
+	"id": 24,
+	"lesson_id": 24,
+	"question": "What is number 5 in Indonesian?",
+	"options": "Empat;Lima;Enam;Tujuh",
+	"correct_answer": "Lima"
+	}
+	]

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your Progress</h2>
+<canvas id="progressChart" width="400" height="200"></canvas>
+<table border="1">
+    <tr>
+        <th>Lesson</th>
+        <th>Language</th>
+        <th>Completed</th>
+        <th>Score</th>
+        <th>Action</th>
+    </tr>
+    {% for progress, lesson in progress_data %}
+    <tr>
+        <td>{{ lesson.title }}</td>
+        <td>{{ lesson.language }}</td>
+        <td>{{ 'Yes' if progress.completed else 'No' }}</td>
+        <td>{{ progress.quiz_score }}</td>
+        <td>
+            <form method="post" action="{{ url_for('delete_progress', progress_id=progress.id) }}" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Prepare labels and data safely
+const labels = [
+    {% if progress_data|length > 0 %}
+        {% for progress, lesson in progress_data %}
+            "{{ lesson.title ~ ' (' ~ lesson.language ~ ')' }}"{{ "," if not loop.last }}
+        {% endfor %}
+    {% else %}
+        "No Lessons"
+    {% endif %}
+];
+
+const scores = [
+    {% if progress_data|length > 0 %}
+        {% for progress, lesson in progress_data %}
+            {{ progress.quiz_score }}{{ "," if not loop.last }}
+        {% endfor %}
+    {% else %}
+        0
+    {% endif %}
+];
+
+const ctx = document.getElementById('progressChart').getContext('2d');
+
+const config = {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Quiz Score',
+            data: scores,
+            backgroundColor: 'rgba(54, 162, 235, 0.6)'
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true, max: 100 }
+        },
+        plugins: {
+            legend: { display: true }
+        }
+    }
+};
+
+new Chart(ctx, config);
+</script>
+{% endblock %}

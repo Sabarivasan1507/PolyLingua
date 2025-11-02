@@ -1,0 +1,169 @@
+[{
+	"id": 1,
+	"language": "English",
+	"title": "Basic Greetings",
+	"content": "Hello, How are you?",
+	"audio_link": "/static/audio/english_greetings.mp3"
+	},
+	{
+	"id": 2,
+	"language": "English",
+	"title": "Numbers 1-10",
+	"content": "One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten",
+	"audio_link": "/static/audio/english_numbers.mp3"
+	},
+	{
+	"id": 3,
+	"language": "Spanish",
+	"title": "Basic Greetings",
+	"content": "Hola, ¿Cómo estás?",
+	"audio_link": "/static/audio/spanish_greetings.mp3"
+	},
+	{
+	"id": 4,
+	"language": "Spanish",
+	"title": "Numbers 1-10",
+	"content": "Uno, Dos, Tres, Cuatro, Cinco, Seis, Siete, Ocho, Nueve, Diez",
+	"audio_link": "/static/audio/spanish_numbers.mp3"
+	},
+	{
+	"id": 5,
+	"language": "Tamil",
+	"title": "Basic Greetings",
+	"content": "Vanakkam, Eppadi irukeenga?",
+	"audio_link": "/static/audio/tamil_greetings.mp3"
+	},
+	{
+	"id": 6,
+	"language": "Tamil",
+	"title": "Numbers 1-10",
+	"content": "Ondru, Irandu, Moondru, Naangu, Aindu, Aaru, Yezhu, Ettu, Onbadu, Paththu",
+	"audio_link": "/static/audio/tamil_numbers.mp3"
+	},
+	{
+	"id": 7,
+	"language": "Mandarin",
+	"title": "Basic Greetings",
+	"content": "Nǐ hǎo, Nǐ hǎo ma?",
+	"audio_link": "/static/audio/mandarin_greetings.mp3"
+	},
+	{
+	"id": 8,
+	"language": "Mandarin",
+	"title": "Numbers 1-10",
+	"content": "Yī, Èr, Sān, Sì, Wǔ, Liù, Qī, Bā, Jiǔ, Shí",
+	"audio_link": "/static/audio/mandarin_numbers.mp3"
+	},
+	{
+	"id": 9,
+	"language": "Hindi",
+	"title": "Basic Greetings",
+	"content": "Namaste, Kaise hain?",
+	"audio_link": "/static/audio/hindi_greetings.mp3"
+	},
+	{
+	"id": 10,
+	"language": "Hindi",
+	"title": "Numbers 1-10",
+	"content": "Ek, Do, Teen, Chaar, Paanch, Cheh, Saat, Aath, Nau, Das",
+	"audio_link": "/static/audio/hindi_numbers.mp3"
+	},
+	{
+	"id": 11,
+	"language": "French",
+	"title": "Basic Greetings",
+	"content": "Bonjour, Comment allez-vous?",
+	"audio_link": "/static/audio/french_greetings.mp3"
+	},
+	{
+	"id": 12,
+	"language": "French",
+	"title": "Numbers 1-10",
+	"content": "Un, Deux, Trois, Quatre, Cinq, Six, Sept, Huit, Neuf, Dix",
+	"audio_link": "/static/audio/french_numbers.mp3"
+	},
+	{
+	"id": 13,
+	"language": "Arabic",
+	"title": "Basic Greetings",
+	"content": "As-salamu alaykum, Kayf halak?",
+	"audio_link": "/static/audio/arabic_greetings.mp3"
+	},
+	{
+	"id": 14,
+	"language": "Arabic",
+	"title": "Numbers 1-10",
+	"content": "Wahid, Ithnan, Thalatha, Arba'a, Khamsa, Sitta, Sab'a, Thamaniya, Tis'a, Ashara",
+	"audio_link": "/static/audio/arabic_numbers.mp3"
+	},
+	{
+	"id": 15,
+	"language": "Bengali",
+	"title": "Basic Greetings",
+	"content": "Shagotom, Kemon achen?",
+	"audio_link": "/static/audio/bengali_greetings.mp3"
+	},
+	{
+	"id": 16,
+	"language": "Bengali",
+	"title": "Numbers 1-10",
+	"content": "Ek, Dui, Tin, Char, Pach, Chhoy, Shat, Aat, Noy, Dash",
+	"audio_link": "/static/audio/bengali_numbers.mp3"
+	},
+	{
+	"id": 17,
+	"language": "Portuguese",
+	"title": "Basic Greetings",
+	"content": "Olá, Como está?",
+	"audio_link": "/static/audio/portuguese_greetings.mp3"
+	},
+	{
+	"id": 18,
+	"language": "Portuguese",
+	"title": "Numbers 1-10",
+	"content": "Um, Dois, Três, Quatro, Cinco, Seis, Sete, Oito, Nove, Dez",
+	"audio_link": "/static/audio/portuguese_numbers.mp3"
+	},
+	{
+	"id": 19,
+	"language": "Russian",
+	"title": "Basic Greetings",
+	"content": "Privet, Kak dela?",
+	"audio_link": "/static/audio/russian_greetings.mp3"
+	},
+	{
+	"id": 20,
+	"language": "Russian",
+	"title": "Numbers 1-10",
+	"content": "Odin, Dva, Tri, Chetyre, Pyat, Shest, Sem, Vosem, Devyat, Desyat",
+	"audio_link": "/static/audio/russian_numbers.mp3"
+	},
+	{
+	"id": 21,
+	"language": "Urdu",
+	"title": "Basic Greetings",
+	"content": "Assalam-o-Alaikum, Kaise hain?",
+	"audio_link": "/static/audio/urdu_greetings.mp3"
+	},
+	{
+	"id": 22,
+	"language": "Urdu",
+	"title": "Numbers 1-10",
+	"content": "Ek, Do, Teen, Chaar, Paanch, Cheh, Saat, Aath, Nau, Das",
+	"audio_link": "/static/audio/urdu_numbers.mp3"
+	},
+	{
+	"id": 23,
+	"language": "Indonesian",
+	"title": "Basic Greetings",
+	"content": "Halo, Apa kabar?",
+	"audio_link": "/static/audio/indonesian_greetings.mp3"
+	},
+	{
+	"id": 24,
+	"language": "Indonesian",
+	"title": "Numbers 1-10",
+	"content": "Satu, Dua, Tiga, Empat, Lima, Enam, Tujuh, Delapan, Sembilan, Sepuluh",
+	"audio_link": "/static/audio/indonesian_numbers.mp3"
+	}
+	]
